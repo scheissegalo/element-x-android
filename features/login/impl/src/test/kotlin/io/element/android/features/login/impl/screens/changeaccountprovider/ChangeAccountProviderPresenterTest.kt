@@ -9,11 +9,11 @@
 package io.element.android.features.login.impl.screens.changeaccountprovider
 
 import com.google.common.truth.Truth.assertThat
+import io.element.android.appconfig.AuthenticationConfig
 import io.element.android.features.enterprise.api.EnterpriseService
 import io.element.android.features.enterprise.test.FakeEnterpriseService
 import io.element.android.features.login.impl.accountprovider.AccountProvider
 import io.element.android.features.login.impl.changeserver.aChangeServerState
-import io.element.android.libraries.matrix.test.AN_ACCOUNT_PROVIDER
 import io.element.android.libraries.matrix.test.AN_ACCOUNT_PROVIDER_2
 import io.element.android.tests.testutils.WarmUpRule
 import io.element.android.tests.testutils.test
@@ -38,11 +38,11 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = AuthenticationConfig.DEFAULT_HOMESERVER_URL.removePrefix("https://"),
                         subtitle = null,
                         isPublic = true,
-                        isMatrixOrg = true,
+                        isDefault = true,
                     )
                 )
             )
@@ -56,7 +56,7 @@ class ChangeAccountProviderPresenterTest {
             changeServerPresenter = { aChangeServerState() },
             enterpriseService = FakeEnterpriseService(
                 defaultHomeserverListResult = {
-                    listOf(AN_ACCOUNT_PROVIDER, AN_ACCOUNT_PROVIDER_2)
+                    listOf(AuthenticationConfig.DEFAULT_HOMESERVER_URL, AN_ACCOUNT_PROVIDER_2)
                 }
             ),
         )
@@ -65,18 +65,18 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = AuthenticationConfig.DEFAULT_HOMESERVER_URL.removePrefix("https://"),
                         subtitle = null,
                         isPublic = true,
-                        isMatrixOrg = true,
+                        isDefault = true,
                     ),
                     AccountProvider(
                         url = "https://element.io",
                         title = "element.io",
                         subtitle = null,
                         isPublic = false,
-                        isMatrixOrg = false,
+                        isDefault = false,
                     )
                 )
             )
@@ -90,7 +90,7 @@ class ChangeAccountProviderPresenterTest {
             changeServerPresenter = { aChangeServerState() },
             enterpriseService = FakeEnterpriseService(
                 defaultHomeserverListResult = {
-                    listOf(AN_ACCOUNT_PROVIDER, EnterpriseService.ANY_ACCOUNT_PROVIDER)
+                    listOf(AuthenticationConfig.DEFAULT_HOMESERVER_URL, EnterpriseService.ANY_ACCOUNT_PROVIDER)
                 }
             ),
         )
@@ -99,11 +99,11 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = AuthenticationConfig.DEFAULT_HOMESERVER_URL.removePrefix("https://"),
                         subtitle = null,
                         isPublic = true,
-                        isMatrixOrg = true,
+                        isDefault = true,
                     )
                 )
             )

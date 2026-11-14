@@ -124,6 +124,8 @@ class DefaultFtueService(
     }
 
     private suspend fun needsAnalyticsOptIn(): Boolean {
+        // Do not ask for consent when no analytics provider is actually configured.
+        if (analyticsService.getAvailableAnalyticsProviders().isEmpty()) return false
         return analyticsService.didAskUserConsentFlow.first().not()
     }
 

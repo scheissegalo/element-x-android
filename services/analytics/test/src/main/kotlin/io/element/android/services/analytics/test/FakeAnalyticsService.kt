@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class FakeAnalyticsService(
     isEnabled: Boolean = false,
     didAskUserConsent: Boolean = false,
+    private val hasAvailableAnalyticsProviders: Boolean = false,
     private val startTransactionLambda: (String, String?, String?) -> AnalyticsTransaction = { _, _, _ -> NoopAnalyticsTransaction },
 ) : AnalyticsService {
     private val isEnabledFlow = MutableStateFlow(isEnabled)
@@ -36,7 +37,8 @@ class FakeAnalyticsService(
     val capturedUserProperties = mutableListOf<UserProperties>()
     val longRunningTransactions = mutableMapOf<AnalyticsLongRunningTransaction, AnalyticsTransaction>()
 
-    override fun getAvailableAnalyticsProviders(): Set<AnalyticsProvider> = emptySet()
+    override fun getAvailableAnalyticsProviders(): Set<AnalyticsProvider> =
+        if (hasAvailableAnalyticsProviders) setOf(NoopAnalyticsProvider) else emptySet()
 
     override val userConsentFlow: Flow<Boolean> = isEnabledFlow.asStateFlow()
 
@@ -95,4 +97,24 @@ class FakeAnalyticsService(
     }
 
     override fun enterSdkSpan(name: String?, parentTraceId: String?): AnalyticsSdkSpan = NoopAnalyticsSdkSpan
+}
+
+private object NoopAnalyticsProvider : AnalyticsProvider {
+    override val name: String = "Noop"
+
+    override fun init() = Unit
+
+    override fun stop() = Unit
+
+    override fun capture(event: VectorAnalyticsEvent) = Unit
+
+    override fun screen(screen: VectorAnalyticsScreen) = Unit
+
+    override fun updateUserProperties(userProperties: UserProperties) = Unit
+
+    override fun updateSuperProperties(updatedProperties: SuperProperties) = Unit
+
+    override fun trackError(throwable: Throwable) = Unit
+
+    override fun startTransaction(name: String, operation: String?, description: String?): AnalyticsTransaction? = null
 }

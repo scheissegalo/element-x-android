@@ -29,6 +29,9 @@ class PosthogAnalyticsProvider(
 ) : AnalyticsProvider {
     override val name = "Posthog"
 
+    override val isConfigured: Boolean
+        get() = postHogFactory.isConfigured()
+
     private var posthog: PostHogInterface? = null
     private var analyticsId: String? = null
 

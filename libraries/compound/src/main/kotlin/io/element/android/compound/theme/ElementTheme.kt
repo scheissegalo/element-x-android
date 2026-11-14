@@ -28,11 +28,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import io.element.android.compound.colors.NappBrandColors
 import io.element.android.compound.tokens.compoundTypography
 import io.element.android.compound.tokens.generated.SemanticColors
 import io.element.android.compound.tokens.generated.TypographyTokens
-import io.element.android.compound.tokens.generated.compoundColorsDark
-import io.element.android.compound.tokens.generated.compoundColorsLight
 
 /**
  * Inspired from https://medium.com/@lucasyujideveloper/54cbcbde1ace
@@ -72,7 +71,7 @@ object ElementTheme {
 }
 
 // Global variables (application level)
-internal val LocalCompoundColors = staticCompositionLocalOf { compoundColorsLight }
+internal val LocalCompoundColors = staticCompositionLocalOf { NappBrandColors.light }
 
 /**
  * Sets up the theme for the application, or a part of it.
@@ -96,8 +95,8 @@ fun ElementTheme(
     lightStatusBar: Boolean = !theme.isDark(),
     // true to enable MaterialYou
     dynamicColor: Boolean = false,
-    compoundLight: SemanticColors = compoundColorsLight,
-    compoundDark: SemanticColors = compoundColorsDark,
+    compoundLight: SemanticColors = NappBrandColors.light,
+    compoundDark: SemanticColors = NappBrandColors.dark,
     materialColorsLight: ColorScheme = compoundLight.toMaterialColorScheme(),
     materialColorsDark: ColorScheme = compoundDark.toMaterialColorScheme(),
     typography: Typography = compoundTypography,

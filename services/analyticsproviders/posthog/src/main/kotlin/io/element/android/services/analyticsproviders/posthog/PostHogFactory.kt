@@ -22,6 +22,8 @@ class PostHogFactory(
     private val buildMeta: BuildMeta,
     private val posthogEndpointConfigProvider: PosthogEndpointConfigProvider,
 ) {
+    fun isConfigured(): Boolean = posthogEndpointConfigProvider.provide() != null
+
     fun createPosthog(): PostHogInterface? {
         val endpoint = posthogEndpointConfigProvider.provide() ?: return null
         return PostHogAndroid.with(

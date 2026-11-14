@@ -17,6 +17,13 @@ interface AnalyticsProvider : AnalyticsTracker, ErrorTracker {
      */
     val name: String
 
+    /**
+     * Whether this provider has everything it needs to run (e.g. an endpoint/DSN).
+     * Providers that are not configured are ignored by the app (analytics opt-in, settings entry).
+     */
+    val isConfigured: Boolean
+        get() = true
+
     fun init()
 
     fun stop()

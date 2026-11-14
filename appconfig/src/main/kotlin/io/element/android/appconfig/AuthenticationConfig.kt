@@ -9,7 +9,11 @@
 package io.element.android.appconfig
 
 object AuthenticationConfig {
-    const val MATRIX_ORG_URL = "https://matrix.org"
+    /**
+     * Homeserver used by default in the login flow (and the only one allowed by the
+     * web-based account creation flow). Users can still connect to other servers.
+     */
+    const val DEFAULT_HOMESERVER_URL = "https://chat.north-industries.com"
 
     /**
      * URL with some docs that explain what's sliding sync and how to add it to your home server.

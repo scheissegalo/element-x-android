@@ -18,6 +18,7 @@ import io.element.android.tests.testutils.lambda.lambdaError
 
 class FakeAnalyticsProvider(
     override val name: String = "FakeAnalyticsProvider",
+    override val isConfigured: Boolean = true,
     private val initLambda: () -> Unit = { lambdaError() },
     private val stopLambda: () -> Unit = { lambdaError() },
     private val captureLambda: (VectorAnalyticsEvent) -> Unit = { lambdaError() },

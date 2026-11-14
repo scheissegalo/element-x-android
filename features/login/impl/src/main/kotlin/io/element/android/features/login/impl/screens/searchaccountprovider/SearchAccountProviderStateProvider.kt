@@ -35,14 +35,14 @@ fun aSearchAccountProviderState(
 
 fun aHomeserverDataList(): List<HomeserverData> {
     return listOf(
-        aHomeserverData(homeserverUrl = AuthenticationConfig.MATRIX_ORG_URL),
+        aHomeserverData(homeserverUrl = AuthenticationConfig.DEFAULT_HOMESERVER_URL),
         aHomeserverData(homeserverUrl = "https://no.sliding.sync"),
         aHomeserverData(homeserverUrl = "https://invalid"),
     )
 }
 
 fun aHomeserverData(
-    homeserverUrl: String = AuthenticationConfig.MATRIX_ORG_URL,
+    homeserverUrl: String = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
 ): HomeserverData {
     return HomeserverData(homeserverUrl = homeserverUrl)
 }

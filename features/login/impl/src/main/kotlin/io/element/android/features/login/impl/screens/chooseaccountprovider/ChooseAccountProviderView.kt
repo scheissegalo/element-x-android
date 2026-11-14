@@ -91,7 +91,7 @@ fun ChooseAccountProviderView(
                 )
 
                 state.accountProviders.forEach { item ->
-                    val alteredItem = if (item.isMatrixOrg) {
+                    val alteredItem = if (item.isDefault) {
                         // Set the subtitle from the resource
                         item.copy(
                             subtitle = stringResource(id = R.string.screen_change_account_provider_matrix_org_subtitle),

@@ -13,5 +13,5 @@ data class AccountProvider(
     val title: String = url.removePrefix("https://").removePrefix("http://"),
     val subtitle: String? = null,
     val isPublic: Boolean = false,
-    val isMatrixOrg: Boolean = false,
+    val isDefault: Boolean = false,
 )

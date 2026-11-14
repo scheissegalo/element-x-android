@@ -17,19 +17,19 @@ open class AccountProviderProvider : PreviewParameterProvider<AccountProvider> {
             anAccountProvider(),
             anAccountProvider().copy(subtitle = null),
             anAccountProvider().copy(subtitle = null, title = "invalid"),
-            anAccountProvider().copy(subtitle = null, title = "Other", isPublic = false, isMatrixOrg = false),
+            anAccountProvider().copy(subtitle = null, title = "Other", isPublic = false, isDefault = false),
             // Add other state here
         )
 }
 
 fun anAccountProvider(
-    url: String = AuthenticationConfig.MATRIX_ORG_URL,
+    url: String = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
     subtitle: String? = "Matrix.org is an open network for secure, decentralized communication.",
     isPublic: Boolean = true,
-    isMatrixOrg: Boolean = true,
+    isDefault: Boolean = true,
 ) = AccountProvider(
     url = url,
     subtitle = subtitle,
     isPublic = isPublic,
-    isMatrixOrg = isMatrixOrg,
+    isDefault = isDefault,
 )

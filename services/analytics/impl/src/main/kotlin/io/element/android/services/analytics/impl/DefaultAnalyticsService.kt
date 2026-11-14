@@ -64,7 +64,7 @@ class DefaultAnalyticsService(
     }
 
     override fun getAvailableAnalyticsProviders(): Set<AnalyticsProvider> {
-        return analyticsProviders
+        return analyticsProviders.filter { it.isConfigured }.toSet()
     }
 
     override suspend fun setUserConsent(userConsent: Boolean) {

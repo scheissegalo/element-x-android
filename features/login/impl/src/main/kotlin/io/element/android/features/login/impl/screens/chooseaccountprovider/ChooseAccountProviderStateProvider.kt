@@ -20,19 +20,19 @@ open class ChooseAccountProviderStateProvider : PreviewParameterProvider<ChooseA
         url = "https://server1.io",
         subtitle = null,
         isPublic = false,
-        isMatrixOrg = false,
+        isDefault = false,
     )
     private val server2 = anAccountProvider(
         url = "https://server2.io",
         subtitle = null,
         isPublic = false,
-        isMatrixOrg = false,
+        isDefault = false,
     )
     private val server3 = anAccountProvider(
         url = "https://server3.io",
         subtitle = null,
         isPublic = false,
-        isMatrixOrg = false,
+        isDefault = false,
     )
     override val values: Sequence<ChooseAccountProviderState>
         get() = sequenceOf(

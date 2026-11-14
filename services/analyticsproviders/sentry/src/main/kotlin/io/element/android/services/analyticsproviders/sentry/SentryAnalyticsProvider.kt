@@ -45,6 +45,9 @@ class SentryAnalyticsProvider(
 ) : AnalyticsProvider {
     override val name = SentryConfig.NAME
 
+    override val isConfigured: Boolean
+        get() = sentryDsn != null
+
     override fun init() {
         Timber.tag(analyticsTag.value).d("Initializing Sentry")
         if (Sentry.isEnabled()) return

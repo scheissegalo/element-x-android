@@ -54,7 +54,7 @@ class DefaultFtueServiceTest {
 
     @Test
     fun `given all checks being true, FtueState is Complete`() = runTest {
-        val analyticsService = FakeAnalyticsService()
+        val analyticsService = FakeAnalyticsService(hasAvailableAnalyticsProviders = true)
         val sessionVerificationService = FakeSessionVerificationService()
         val permissionStateProvider = FakePermissionStateProvider(permissionGranted = true)
         val lockScreenService = FakeLockScreenService()
@@ -104,7 +104,7 @@ class DefaultFtueServiceTest {
         val sessionVerificationService = FakeSessionVerificationService().apply {
             emitVerifiedStatus(SessionVerifiedStatus.NotVerified)
         }
-        val analyticsService = FakeAnalyticsService()
+        val analyticsService = FakeAnalyticsService(hasAvailableAnalyticsProviders = true)
         val permissionStateProvider = FakePermissionStateProvider(permissionGranted = false)
         val lockScreenService = FakeLockScreenService()
         val service = createDefaultFtueService(
@@ -142,7 +142,7 @@ class DefaultFtueServiceTest {
     @Test
     fun `if a check for a step is true, start from the next one`() = runTest {
         val sessionVerificationService = FakeSessionVerificationService()
-        val analyticsService = FakeAnalyticsService()
+        val analyticsService = FakeAnalyticsService(hasAvailableAnalyticsProviders = true)
         val permissionStateProvider = FakePermissionStateProvider(permissionGranted = false)
         val lockScreenService = FakeLockScreenService()
         val service = createDefaultFtueService(
@@ -169,7 +169,7 @@ class DefaultFtueServiceTest {
     @Test
     fun `if version is older than 13 we don't display the notification opt in screen`() = runTest {
         val sessionVerificationService = FakeSessionVerificationService()
-        val analyticsService = FakeAnalyticsService()
+        val analyticsService = FakeAnalyticsService(hasAvailableAnalyticsProviders = true)
         val lockScreenService = FakeLockScreenService()
 
         val service = createDefaultFtueService(
@@ -194,7 +194,7 @@ class DefaultFtueServiceTest {
 
 internal fun TestScope.createDefaultFtueService(
     sessionVerificationService: SessionVerificationService = FakeSessionVerificationService(),
-    analyticsService: AnalyticsService = FakeAnalyticsService(),
+    analyticsService: AnalyticsService = FakeAnalyticsService(hasAvailableAnalyticsProviders = true),
     permissionStateProvider: PermissionStateProvider = FakePermissionStateProvider(permissionGranted = false),
     lockScreenService: LockScreenService = FakeLockScreenService(),
     sessionPreferencesStore: SessionPreferencesStore = InMemorySessionPreferencesStore(),
