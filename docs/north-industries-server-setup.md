@@ -18,9 +18,39 @@ Everything the **homeserver / website / push infrastructure** needs so the rebra
 | OAuth redirect URI | `com.karich.design.nappx:/` (debug: `…nappx.debug:/`, nightly: `…nappx.nightly:/`) | `resValue("login_redirect_scheme")` in `app/build.gradle.kts` |
 | Custom scheme | `nappx://` | `app/src/main/AndroidManifest.xml` |
 | Login link | `https://mobile.north-industries.com/napp/?account_provider=…&login_hint=…` | manifest + `DefaultLoginIntentResolver` |
-| Push gateway | `https://matrix.org/_matrix/push/v1/notify` (**needs changing**) | `libraries/pushproviders/firebase/.../FirebaseConfig.kt` |
-| Push `app_id` | `im.vector.app.android` (**needs changing**) | `appconfig/.../PushConfig.kt` |
-| OAuth client metadata | client `https://north-industries.com`, logo `https://north-industries.com/mobile-icon.png`, TOS `…/acceptable-use-policy-terms`, policy `…/privacy` | `libraries/matrix/api/build.gradle.kts` |
+| Push gateway | `https://push.klabausterbeere.xyz/_matrix/push/v1/notify` | `libraries/pushproviders/firebase/.../FirebaseConfig.kt` |
+| Push `app_id` | `com.karich.design.nappx` (new app; old app uses `kb.chat`) | `appconfig/.../PushConfig.kt` |
+| UnifiedPush gateway | `https://push.klabausterbeere.xyz/_matrix/push/v1/notify` | `libraries/pushproviders/unifiedpush/.../UnifiedPushConfig.kt` |
+| OAuth client metadata | client `https://north-industries.com`, logo `https://north-industries.com/mobile-icon.png`, TOS `.../acceptable-use-policy-terms`, policy `.../privacy` | `libraries/matrix/api/build.gradle.kts` |
+
+### Existing infrastructure (from the active N-App Classic app)
+
+| Item | Value |
+| --- | --- |
+| Firebase project | `klabausterbeerechat` (project number `210317184062`) |
+| Old app id | `kb.chat` (`kb.chat.debug` for debug), pusher `app_id` = `kb.chat` |
+| Push gateway (Sygnal) | `https://push.klabausterbeere.xyz/_matrix/push/v1/notify` |
+| Firebase Android clients | `chat.klabauster.beere`, `kb.chat`, `kb.chat.debug`, `com.karich.design.nappx` |
+| **Still missing in Firebase** | `com.karich.design.nappx.debug`, `com.karich.design.nappx.nightly` |
+
+The old app can stay as is. The new app registers its own pusher with
+`app_id = com.karich.design.nappx`; add a second app entry in Sygnal using the same FCM service
+account. Both apps can be installed and logged in at the same time — each registers a pusher with
+its own FCM token, so both receive notifications (the same account will get one notification per app).
+
+### Signing fingerprints
+
+FCM does **not** need fingerprints. They are needed for Firebase Auth / Google Sign-In, Play
+Integrity/App Check, and Android App Links (`assetlinks.json`).
+
+- Debug (standard Android debug key, same in both projects):
+  - SHA-1: `41:BD:63:B3:B6:12:A1:5D:9B:A3:6A:52:45:C3:93:F2:A9:B9:92:D1`
+  - SHA-256: `B0:B0:51:DC:56:5C:81:2F:E1:7F:6F:3E:94:5B:4D:79:04:71:23:AB:0D:A6:12:86:76:9E:B2:94:91:97:13:0E`
+- Release / Play: get the **App signing key certificate** from Play Console → Test and release →
+  Setup → App integrity. This is the certificate devices actually see (Play re-signs your upload).
+  If you sign locally, use `keytool -list -v -keystore <keystore> -alias <alias>`.
+- The new app currently signs *release* with the debug keystore (`app/build.gradle.kts`); configure a
+  real release keystore before publishing.
 
 ---
 
@@ -120,34 +150,43 @@ Firebase project and a Matrix push gateway.
 
 ### 5a. Firebase
 
-1. Create a Firebase Android app for each package id:
-   - `com.karich.design.nappx` (release)
+A project already exists (`klabausterbeerechat`) and already contains the release package
+`com.karich.design.nappx`. Still to do:
+
+1. Add the remaining Android apps in Firebase:
    - `com.karich.design.nappx.debug`
    - `com.karich.design.nappx.nightly`
-2. Download `google-services.json` and place it in `app/` (it is git-ignored).
+2. Re-download `google-services.json` and place it in `app/`. (It is **not** in `.gitignore` in this
+   repository; decide whether to commit it or ignore it. The old app keeps per-variant copies under
+   `vector-app/src/gplay/{debug,release,nightly}/`.)
 3. Enable the Google services Gradle plugin in `app/build.gradle.kts` (currently commented out):
-   `alias(libs.plugins.gms.google.services)`.
-   In CI, inject the file as a secret before building the `gplay` flavor.
+   `alias(libs.plugins.gms.google.services)`. The plugin fails the build if a variant's package id is
+   missing from the JSON, which is why step 1 is required before enabling it.
 4. The `fdroid` flavor does not bundle Firebase; push there only works through UnifiedPush.
 
 ### 5b. Push gateway (Sygnal)
 
-1. Deploy Sygnal at `https://push.north-industries.com` with the FCM service-account credentials.
-2. Configure an app entry whose `app_id` matches `PushConfig.PUSHER_APP_ID`
-   (change it to e.g. `com.karich.design.nappx`; max 64 chars).
-3. Make sure `POST https://push.north-industries.com/_matrix/push/v1/notify` is reachable from the
-   homeserver (it is the URL the client registered).
-4. Update the app defaults:
-   - `libraries/pushproviders/firebase/.../FirebaseConfig.kt` → `PUSHER_HTTP_URL`
-   - or set it through the enterprise `firebasePushGateway()` if you keep enterprise config.
-5. Synapse side: no global gateway setting is required (clients register the URL), but ensure
-   outbound HTTPS from the homeserver workers to the gateway and that `enable_push`/pusher workers
-   are healthy.
+Sygnal is already running at `https://push.klabausterbeere.xyz` and serves the old app's `kb.chat`
+entry.
+
+1. Add an app entry for `com.karich.design.nappx` using the **same FCM service account/credentials**
+   (both apps live in the same Firebase project).
+2. `PushConfig.PUSHER_APP_ID` is already set to `com.karich.design.nappx`; make sure the Sygnal entry
+   matches exactly. (Alternatively keep `kb.chat` in both apps and reuse the existing entry.)
+3. The gateway URL is already configured as
+   `https://push.klabausterbeere.xyz/_matrix/push/v1/notify` in `FirebaseConfig` and
+   `UnifiedPushConfig`.
+4. Synapse side: no global gateway setting is required (clients register the URL), but ensure
+   outbound HTTPS from the homeserver workers to the gateway and that pusher workers are healthy.
+5. Both apps can run side by side: each registers a pusher with its own FCM token, so both receive
+   notifications. If the same account is signed in on both apps on the same phone, expect one
+   notification per app per event.
 
 ### 5c. UnifiedPush (optional, F-Droid)
 
-Default gateway is `https://matrix.gateway.unifiedpush.org/_matrix/push/v1/notify`. Override with
-`EnterpriseService.unifiedPushDefaultPushGateway()` if you run your own.
+The default gateway is set to the same Sygnal instance
+(`https://push.klabausterbeere.xyz/_matrix/push/v1/notify`). Override with
+`EnterpriseService.unifiedPushDefaultPushGateway()` if needed.
 
 ### 5d. Verification
 
