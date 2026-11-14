@@ -19,9 +19,9 @@ open class AnalyticsPreferencesStateProvider : PreviewParameterProvider<Analytic
 }
 
 fun aAnalyticsPreferencesState(
-    applicationName: String = "Element X",
+    applicationName: String = "N-App X",
     isEnabled: Boolean = false,
-    policyUrl: String = "https://element.io",
+    policyUrl: String = "https://north-industries.com",
 ) = AnalyticsPreferencesState(
     applicationName = applicationName,
     isEnabled = isEnabled,

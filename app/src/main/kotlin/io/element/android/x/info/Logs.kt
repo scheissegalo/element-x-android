@@ -10,7 +10,7 @@ package io.element.android.x.info
 
 import android.content.Context
 import io.element.android.libraries.androidutils.system.getVersionCodeFromManifest
-import io.element.android.x.BuildConfig
+import com.karich.design.nappx.BuildConfig
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date

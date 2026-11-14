@@ -10,7 +10,7 @@ package io.element.android.x.oidc
 
 import com.google.common.truth.Truth.assertThat
 import io.element.android.services.toolbox.test.strings.FakeStringProvider
-import io.element.android.x.R
+import com.karich.design.nappx.R
 import org.junit.Test
 
 class DefaultOAuthRedirectUrlProviderTest {

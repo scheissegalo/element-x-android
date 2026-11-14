@@ -25,12 +25,12 @@ class NotificationSoundStorageTest {
 
     @Test
     fun `fromStored - element_default sentinel maps to ElementDefault`() {
-        assertThat(NotificationSound.fromStored("element_default")).isEqualTo(NotificationSound.ElementDefault)
+        assertThat(NotificationSound.fromStored("napp_default")).isEqualTo(NotificationSound.NAppDefault)
     }
 
     @Test
     fun `fromStored - element_fade sentinel maps to ElementFade`() {
-        assertThat(NotificationSound.fromStored("element_fade")).isEqualTo(NotificationSound.ElementFade)
+        assertThat(NotificationSound.fromStored("napp_fade")).isEqualTo(NotificationSound.NAppFade)
     }
 
     @Test
@@ -46,12 +46,12 @@ class NotificationSoundStorageTest {
 
     @Test
     fun `toStored - ElementDefault encodes as element_default`() {
-        assertThat(NotificationSound.ElementDefault.toStored()).isEqualTo("element_default")
+        assertThat(NotificationSound.NAppDefault.toStored()).isEqualTo("napp_default")
     }
 
     @Test
     fun `toStored - ElementFade encodes as element_fade`() {
-        assertThat(NotificationSound.ElementFade.toStored()).isEqualTo("element_fade")
+        assertThat(NotificationSound.NAppFade.toStored()).isEqualTo("napp_fade")
     }
 
     @Test
@@ -68,8 +68,8 @@ class NotificationSoundStorageTest {
     fun `round-trip preserves every variant`() {
         val variants = listOf(
             NotificationSound.SystemDefault,
-            NotificationSound.ElementDefault,
-            NotificationSound.ElementFade,
+            NotificationSound.NAppDefault,
+            NotificationSound.NAppFade,
             NotificationSound.Silent,
             NotificationSound.Custom("content://media/42"),
         )

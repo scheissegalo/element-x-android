@@ -168,7 +168,7 @@ class NotificationChannelsTest : RobolectricTest() {
         }
         val channels = createNotificationChannels(notificationManager = notificationManager)
 
-        channels.recreateNoisyChannel(sound = NotificationSound.ElementDefault, version = 1)
+        channels.recreateNoisyChannel(sound = NotificationSound.NAppDefault, version = 1)
 
         assertThat(captured.captured.sound?.scheme).isEqualTo("android.resource")
     }
@@ -183,10 +183,10 @@ class NotificationChannelsTest : RobolectricTest() {
         }
         val channels = createNotificationChannels(notificationManager = notificationManager)
 
-        channels.recreateNoisyChannel(sound = NotificationSound.ElementFade, version = 1)
+        channels.recreateNoisyChannel(sound = NotificationSound.NAppFade, version = 1)
 
         val context = RuntimeEnvironment.getApplication()
-        val expected = "android.resource://${context.packageName}/${io.element.android.libraries.push.impl.R.raw.element_fade}".toUri()
+        val expected = "android.resource://${context.packageName}/${io.element.android.libraries.push.impl.R.raw.napp_fade}".toUri()
         assertThat(captured.captured.sound).isEqualTo(expected)
     }
 
@@ -294,14 +294,14 @@ class NotificationChannelsTest : RobolectricTest() {
 
         val result = channels.readNoisyChannelSound()
 
-        assertThat(result).isEqualTo(NotificationSound.ElementDefault)
+        assertThat(result).isEqualTo(NotificationSound.NAppDefault)
     }
 
     @Test
     @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
     fun `readNoisyChannelSound - classifies the bundled fade URI as ElementFade`() = runTest {
         val context = RuntimeEnvironment.getApplication()
-        val ourFade = "android.resource://${context.packageName}/${io.element.android.libraries.push.impl.R.raw.element_fade}".toUri()
+        val ourFade = "android.resource://${context.packageName}/${io.element.android.libraries.push.impl.R.raw.napp_fade}".toUri()
         val channel = mockk<android.app.NotificationChannel>(relaxed = true) {
             every { sound } returns ourFade
         }
@@ -313,7 +313,7 @@ class NotificationChannelsTest : RobolectricTest() {
 
         val result = channels.readNoisyChannelSound()
 
-        assertThat(result).isEqualTo(NotificationSound.ElementFade)
+        assertThat(result).isEqualTo(NotificationSound.NAppFade)
     }
 
     @Test
@@ -350,7 +350,7 @@ class NotificationChannelsTest : RobolectricTest() {
         )
 
         val config = appPreferencesStore.getNotificationSoundChannelConfig()
-        assertThat(config.messageSound).isEqualTo(NotificationSound.ElementDefault)
+        assertThat(config.messageSound).isEqualTo(NotificationSound.NAppDefault)
         assertThat(config.messageSoundVersion).isEqualTo(1)
     }
 
@@ -368,13 +368,13 @@ class NotificationChannelsTest : RobolectricTest() {
         // First boot: migrate.
         createNotificationChannels(notificationManager = notificationManager, appPreferencesStore = appPreferencesStore)
         val afterFirst = appPreferencesStore.getNotificationSoundChannelConfig()
-        assertThat(afterFirst.messageSound).isEqualTo(NotificationSound.ElementDefault)
+        assertThat(afterFirst.messageSound).isEqualTo(NotificationSound.NAppDefault)
         assertThat(afterFirst.messageSoundVersion).isEqualTo(1)
 
         // Second boot: gate (version == 0) no longer matches, so the version must not bump again.
         createNotificationChannels(notificationManager = notificationManager, appPreferencesStore = appPreferencesStore)
         val afterSecond = appPreferencesStore.getNotificationSoundChannelConfig()
-        assertThat(afterSecond.messageSound).isEqualTo(NotificationSound.ElementDefault)
+        assertThat(afterSecond.messageSound).isEqualTo(NotificationSound.NAppDefault)
         assertThat(afterSecond.messageSoundVersion).isEqualTo(1)
     }
 
@@ -492,7 +492,7 @@ class NotificationChannelsTest : RobolectricTest() {
         // Default to ElementDefault so the legacy `(SystemDefault, version=0)` migration gate
         // doesn't fire and silently rewrite the prefs store. Tests that exercise the migration
         // construct their own store explicitly.
-        appPreferencesStore: AppPreferencesStore = InMemoryAppPreferencesStore(messageSound = NotificationSound.ElementDefault),
+        appPreferencesStore: AppPreferencesStore = InMemoryAppPreferencesStore(messageSound = NotificationSound.NAppDefault),
     ) = DefaultNotificationChannels(
         notificationManager = notificationManager,
         stringProvider = FakeStringProvider(),

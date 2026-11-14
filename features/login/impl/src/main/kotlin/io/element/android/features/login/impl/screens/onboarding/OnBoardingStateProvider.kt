@@ -40,7 +40,7 @@ fun anOnBoardingState(
     isAddingAccount: Boolean = false,
     showBackButton: Boolean = false,
     showDeveloperSettings: Boolean = false,
-    productionApplicationName: String = "Element",
+    productionApplicationName: String = "N-App",
     defaultAccountProvider: String? = null,
     mustChooseAccountProvider: Boolean = false,
     canLoginWithQrCode: Boolean = false,

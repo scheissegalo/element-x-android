@@ -22,14 +22,14 @@ sealed interface NotificationSound {
      * where it resolves to `R.raw.message`; the ringing-call channel has no bundled tone and
      * treats this the same as [SystemDefault].
      */
-    data object ElementDefault : NotificationSound
+    data object NAppDefault : NotificationSound
 
     /**
-     * Use the bundled in-app fade sound. Like [ElementDefault] this is meaningful only for the
-     * noisy message channel (`R.raw.element_fade`); the ringing-call channel has no bundled tone
+     * Use the bundled in-app fade sound. Like [NAppDefault] this is meaningful only for the
+     * noisy message channel (`R.raw.napp_fade`); the ringing-call channel has no bundled tone
      * and treats this the same as [SystemDefault].
      */
-    data object ElementFade : NotificationSound
+    data object NAppFade : NotificationSound
 
     /** Produce no sound. */
     data object Silent : NotificationSound
@@ -39,25 +39,25 @@ sealed interface NotificationSound {
 
     companion object {
         // String? round-trip used by [AppPreferencesStore]:
-        //   null -> SystemDefault, "silent" -> Silent, "element_default" -> ElementDefault,
-        //   "element_fade" -> ElementFade, else -> Custom(uri).
+        //   null -> SystemDefault, "silent" -> Silent, "napp_default" -> NAppDefault,
+        //   "napp_fade" -> NAppFade, else -> Custom(uri).
         private const val STORED_SILENT = "silent"
-        private const val STORED_ELEMENT_DEFAULT = "element_default"
-        private const val STORED_ELEMENT_FADE = "element_fade"
+        private const val STORED_NAPP_DEFAULT = "napp_default"
+        private const val STORED_NAPP_FADE = "napp_fade"
 
         fun fromStored(value: String?): NotificationSound = when (value) {
             null -> SystemDefault
             STORED_SILENT -> Silent
-            STORED_ELEMENT_DEFAULT -> ElementDefault
-            STORED_ELEMENT_FADE -> ElementFade
+            STORED_NAPP_DEFAULT -> NAppDefault
+            STORED_NAPP_FADE -> NAppFade
             else -> Custom(value)
         }
 
         fun NotificationSound.toStored(): String? = when (this) {
             SystemDefault -> null
             Silent -> STORED_SILENT
-            ElementDefault -> STORED_ELEMENT_DEFAULT
-            ElementFade -> STORED_ELEMENT_FADE
+            NAppDefault -> STORED_NAPP_DEFAULT
+            NAppFade -> STORED_NAPP_FADE
             is Custom -> uri
         }
     }

@@ -50,7 +50,7 @@ open class IncomingVerificationStateProvider : PreviewParameterProvider<Incoming
 internal fun aStepInitial(
     isWaiting: Boolean = false,
 ) = Step.Initial(
-    deviceDisplayName = "Element X Android",
+    deviceDisplayName = "N-App X Android",
     deviceId = DeviceId("ILAKNDNASDLK"),
     formattedSignInTime = "12:34",
     isWaiting = isWaiting,

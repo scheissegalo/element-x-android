@@ -12,7 +12,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import io.element.android.libraries.matrix.api.auth.OAuthRedirectUrlProvider
 import io.element.android.services.toolbox.api.strings.StringProvider
-import io.element.android.x.R
+import com.karich.design.nappx.R
 
 @ContributesBinding(AppScope::class)
 class DefaultOAuthRedirectUrlProvider(

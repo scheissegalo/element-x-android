@@ -31,8 +31,8 @@ internal fun buildRingtonePickerIntent(
         // ElementDefault and ElementFade refer to bundled raw resources, which the system picker
         // can't enumerate. Fall back to the picker's "Default" row so the user has something selected.
         NotificationSound.SystemDefault,
-        NotificationSound.ElementDefault,
-        NotificationSound.ElementFade -> defaultUri
+        NotificationSound.NAppDefault,
+        NotificationSound.NAppFade -> defaultUri
         NotificationSound.Silent -> null
         is NotificationSound.Custom -> current.uri.toUri()
     }

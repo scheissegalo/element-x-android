@@ -39,7 +39,7 @@ plugins {
 }
 
 android {
-    namespace = "io.element.android.x"
+    namespace = "com.karich.design.nappx"
 
     defaultConfig {
         applicationId = BuildTimeConfig.APPLICATION_ID
@@ -103,7 +103,7 @@ android {
     logger.warnInBox("Building ${defaultConfig.applicationId} ($baseAppName) [$buildType]")
 
     buildTypes {
-        val oAuthRedirectSchemeBase = BuildTimeConfig.METADATA_HOST_REVERSED ?: "io.element.android"
+        val oAuthRedirectSchemeBase = BuildTimeConfig.METADATA_HOST_REVERSED ?: "com.karich.design.nappx"
         getByName("debug") {
             resValue("string", "app_name", "$baseAppName dbg")
             resValue(

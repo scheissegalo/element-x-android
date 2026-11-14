@@ -341,8 +341,8 @@ private fun SoundsPreferenceCategory(state: NotificationSettingsState) {
 @Composable
 private fun MessageSoundDialog(state: NotificationSettingsState) {
     val initialSelection = when (state.messageSound.sound) {
-        NotificationSound.ElementDefault -> 0
-        NotificationSound.ElementFade -> 1
+        NotificationSound.NAppDefault -> 0
+        NotificationSound.NAppFade -> 1
         NotificationSound.SystemDefault -> 2
         else -> null
     }
@@ -368,8 +368,8 @@ private fun MessageSoundDialog(state: NotificationSettingsState) {
         initialSelection = initialSelection,
         onSelectOption = { index ->
             when (index) {
-                0 -> state.eventSink(NotificationSettingsEvents.SelectMessageSoundPreset(NotificationSound.ElementDefault))
-                1 -> state.eventSink(NotificationSettingsEvents.SelectMessageSoundPreset(NotificationSound.ElementFade))
+                0 -> state.eventSink(NotificationSettingsEvents.SelectMessageSoundPreset(NotificationSound.NAppDefault))
+                1 -> state.eventSink(NotificationSettingsEvents.SelectMessageSoundPreset(NotificationSound.NAppFade))
                 2 -> state.eventSink(NotificationSettingsEvents.SelectMessageSoundPreset(NotificationSound.SystemDefault))
                 else -> state.eventSink(NotificationSettingsEvents.LaunchMessageSoundPicker)
             }

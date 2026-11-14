@@ -128,7 +128,7 @@ class DefaultNotificationChannels(
             // silently flip sound. Promote it to `ElementDefault` once, gated on version==0 so the
             // migration is idempotent.
             if (initial.messageSoundVersion == 0 && initial.messageSound == NotificationSound.SystemDefault) {
-                appPreferencesStore.setMessageSoundAndIncrementVersion(NotificationSound.ElementDefault, title = null)
+                appPreferencesStore.setMessageSoundAndIncrementVersion(NotificationSound.NAppDefault, title = null)
                 appPreferencesStore.getNotificationSoundChannelConfig()
             } else {
                 initial
@@ -261,8 +261,8 @@ class DefaultNotificationChannels(
     private fun resolveNoisySoundUri(sound: NotificationSound): Uri? = when (sound) {
         NotificationSound.Silent -> null
         NotificationSound.SystemDefault -> Settings.System.DEFAULT_NOTIFICATION_URI
-        NotificationSound.ElementDefault -> bundledMessageSoundUri()
-        NotificationSound.ElementFade -> bundledFadeSoundUri()
+        NotificationSound.NAppDefault -> bundledMessageSoundUri()
+        NotificationSound.NAppFade -> bundledFadeSoundUri()
         is NotificationSound.Custom -> parseUriOrFallback(sound.uri) { bundledMessageSoundUri() }
     }
 
@@ -270,8 +270,8 @@ class DefaultNotificationChannels(
         NotificationSound.Silent -> null
         // The ringing channel has no bundled tone — treat ElementDefault and ElementFade like SystemDefault here.
         NotificationSound.SystemDefault,
-        NotificationSound.ElementDefault,
-        NotificationSound.ElementFade -> Settings.System.DEFAULT_RINGTONE_URI
+        NotificationSound.NAppDefault,
+        NotificationSound.NAppFade -> Settings.System.DEFAULT_RINGTONE_URI
         is NotificationSound.Custom -> parseUriOrFallback(sound.uri) { Settings.System.DEFAULT_RINGTONE_URI }
     }
 
@@ -279,7 +279,7 @@ class DefaultNotificationChannels(
         "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.message}".toUri()
 
     private fun bundledFadeSoundUri(): Uri =
-        "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.element_fade}".toUri()
+        "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.napp_fade}".toUri()
 
     /**
      * Lets system_server ("android") and SystemUI read our FileProvider sound URI; no-op otherwise.
@@ -399,8 +399,8 @@ class DefaultNotificationChannels(
         } ?: return null
         return when (val sound = channel.sound) {
             null -> NotificationSound.Silent
-            bundledUri -> NotificationSound.ElementDefault
-            bundledFadeUri -> NotificationSound.ElementFade
+            bundledUri -> NotificationSound.NAppDefault
+            bundledFadeUri -> NotificationSound.NAppFade
             systemDefaultUri -> NotificationSound.SystemDefault
             else -> NotificationSound.Custom(sound.toString())
         }

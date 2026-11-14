@@ -30,8 +30,8 @@ import io.element.android.libraries.di.annotations.AppCoroutineScope
 import io.element.android.libraries.di.annotations.ApplicationContext
 import io.element.android.libraries.recentemojis.api.EmojibaseProvider
 import io.element.android.libraries.recentemojis.impl.DefaultEmojibaseProvider
-import io.element.android.x.BuildConfig
-import io.element.android.x.R
+import com.karich.design.nappx.BuildConfig
+import com.karich.design.nappx.R
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope

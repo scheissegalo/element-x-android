@@ -105,7 +105,7 @@ fun AppDeveloperSettingsView(
 private fun ElementCallCategory(
     state: AppDeveloperSettingsState,
 ) {
-    PreferenceCategory(title = "Element Call") {
+    PreferenceCategory(title = "N-App Call") {
         val callUrlState = state.customElementCallBaseUrlState
 
         val supportingText = if (callUrlState.baseUrl.isNullOrEmpty()) {

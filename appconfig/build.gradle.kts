@@ -25,7 +25,7 @@ android {
             value = if (isEnterpriseBuild) {
                 BuildTimeConfig.URL_POLICY ?: ""
             } else {
-                "https://element.io/cookie-policy"
+                "https://north-industries.com/cookie-policy"
             },
         )
         buildConfigFieldStr(
@@ -33,7 +33,8 @@ android {
             value = if (isEnterpriseBuild) {
                 BuildTimeConfig.BUG_REPORT_URL ?: ""
             } else {
-                "https://rageshakes.element.io/api/submit"
+                // Empty value disables the bug report flow for this build.
+                ""
             },
         )
         buildConfigFieldStr(
@@ -41,7 +42,8 @@ android {
             value = if (isEnterpriseBuild) {
                 BuildTimeConfig.BUG_REPORT_APP_NAME ?: ""
             } else {
-                "element-x-android"
+                // Empty value disables the bug report flow for this build.
+                ""
             },
         )
     }
