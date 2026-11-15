@@ -7,8 +7,8 @@
 # Please see LICENSE files in the repository root for full details.
 
 # Format is:
-# https://call.element.io/*
+# https://call.north-industries.com/*
 # For instance
-# https://call.element.io/TestElementCall
+# https://call.north-industries.com/TestElementCall
 
-adb shell am start -a android.intent.action.VIEW -d https://call.element.io/TestElementCall
+adb shell am start -a android.intent.action.VIEW -d https://call.north-industries.com/TestElementCall

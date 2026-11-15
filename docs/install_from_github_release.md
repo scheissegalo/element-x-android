@@ -67,20 +67,20 @@ brew install bundletool
 2. Download the asset `app-release-signed.aab`
 3. Navigate to the folder where you cloned the project and run the following command:
 ```bash
-bundletool build-apks --bundle=<PATH_TO_YOUR_APP-RELEASE-SIGNED.AAB_FILE> --output=./tmp/elementx.apks \
+bundletool build-apks --bundle=<PATH_TO_YOUR_APP-RELEASE-SIGNED.AAB_FILE> --output=./tmp/nappx.apks \
       --ks=./app/signature/debug.keystore --ks-pass=pass:android --ks-key-alias=androiddebugkey --key-pass=pass:android \
       --overwrite
 ```
 For instance:
 ```bash
-bundletool build-apks --bundle=./tmp/Element/0.1.5/app-release-signed.aab --output=./tmp/elementx.apks \ 
+bundletool build-apks --bundle=./tmp/NApp/26.07.0/app-release-signed.aab --output=./tmp/nappx.apks \ 
       --ks=./app/signature/debug.keystore --ks-pass=pass:android --ks-key-alias=androiddebugkey --key-pass=pass:android \
       --overwrite
 ```
 4. Run an Android emulator, or connect a real device to your computer
 5. Install the APKs on the device:
 ```bash
-bundletool install-apks --apks=./tmp/elementx.apks
+bundletool install-apks --apks=./tmp/nappx.apks
 ```
 
 That's it, the application should be installed on your device, you can start it from the launcher icon.

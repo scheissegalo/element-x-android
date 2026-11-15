@@ -6,4 +6,4 @@
 # Please see LICENSE files in the repository root for full details.
 
 adb shell am start -a android.intent.action.VIEW \
-   -d "element://room/%23element-android%3Amatrix.org"
+   -d "nappx://room/%23napp-x-android%3Achat.north-industries.com"

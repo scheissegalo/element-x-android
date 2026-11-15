@@ -521,7 +521,7 @@ class NotificationSettingsPresenterTest {
     }
 
     @Test
-    fun `present - ElementDefault and ElementFade display names do not invoke the resolver`() = runTest {
+    fun `present - NAppDefault and NAppFade display names do not invoke the resolver`() = runTest {
         val resolverCalls = mutableListOf<String>()
         val presenter = createNotificationSettingsPresenter(
             appPreferencesStore = InMemoryAppPreferencesStore(
@@ -937,7 +937,7 @@ class NotificationSettingsPresenterTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `present - SelectMessageSoundPreset persists ElementDefault, recreates the channel and closes the dialog`() = runTest {
+    fun `present - SelectMessageSoundPreset persists NAppDefault, recreates the channel and closes the dialog`() = runTest {
         val recreateRecorder = lambdaRecorder<NotificationSound, Int, Unit> { _, _ -> }
         val appPreferencesStore = InMemoryAppPreferencesStore()
         val presenter = createNotificationSettingsPresenter(
@@ -1089,7 +1089,7 @@ class NotificationSettingsPresenterTest {
     }
 
     @Test
-    fun `present - persisted ElementDefault renders Element default label`() = runTest {
+    fun `present - persisted NAppDefault renders N-App default label`() = runTest {
         val presenter = createNotificationSettingsPresenter(
             appPreferencesStore = InMemoryAppPreferencesStore(messageSound = NotificationSound.NAppDefault),
         )
@@ -1099,7 +1099,7 @@ class NotificationSettingsPresenterTest {
                     it.messageSound.sound == NotificationSound.NAppDefault
             }.last()
             // FakeStringProvider returns "A string" for any resource, so this just verifies the
-            // ElementDefault branch is taken (vs falling through to the Custom resolver path).
+            // NAppDefault branch is taken (vs falling through to the Custom resolver path).
             assertThat(state.messageSound.displayName).isEqualTo("A string")
             cancelAndIgnoreRemainingEvents()
         }

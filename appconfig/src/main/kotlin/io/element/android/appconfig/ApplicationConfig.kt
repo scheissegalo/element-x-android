@@ -12,22 +12,21 @@ object ApplicationConfig {
     /**
      * Application name used in the UI for string. If empty, the value is taken from the resources `R.string.app_name`.
      * Note that this value is not used for the launcher icon.
-     * For Element, the value is empty, and so read from `R.string.app_name`, which depends on the build variant:
-     * - "Element X" for release builds;
-     * - "Element X dbg" for debug builds;
-     * - "Element X nightly" for nightly builds.
+     * For N-App, the value is empty, and so read from `R.string.app_name`, which depends on the build variant:
+     * - "N-App X" for release builds;
+     * - "N-App X dbg" for debug builds;
+     * - "N-App X nightly" for nightly builds.
      */
     const val APPLICATION_NAME: String = ""
 
     /**
-     * Used in the strings to reference the Element client.
+     * Used in the strings to reference the app.
      * Cannot be empty.
-     * For Element, the value is "Element".
      */
     const val PRODUCTION_APPLICATION_NAME: String = "N-App"
 
     /**
-     * Used in the strings to reference the Desktop client, for instance Element Web.
+     * Used in the strings to reference the Desktop client, for instance N-App Web.
      * Cannot be empty.
      */
     const val DESKTOP_APPLICATION_NAME: String = "N-App"

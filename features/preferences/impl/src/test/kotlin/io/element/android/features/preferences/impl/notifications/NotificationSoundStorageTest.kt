@@ -24,12 +24,12 @@ class NotificationSoundStorageTest {
     }
 
     @Test
-    fun `fromStored - element_default sentinel maps to ElementDefault`() {
+    fun `fromStored - napp_default sentinel maps to NAppDefault`() {
         assertThat(NotificationSound.fromStored("napp_default")).isEqualTo(NotificationSound.NAppDefault)
     }
 
     @Test
-    fun `fromStored - element_fade sentinel maps to ElementFade`() {
+    fun `fromStored - napp_fade sentinel maps to NAppFade`() {
         assertThat(NotificationSound.fromStored("napp_fade")).isEqualTo(NotificationSound.NAppFade)
     }
 
@@ -45,12 +45,12 @@ class NotificationSoundStorageTest {
     }
 
     @Test
-    fun `toStored - ElementDefault encodes as element_default`() {
+    fun `toStored - NAppDefault encodes as napp_default`() {
         assertThat(NotificationSound.NAppDefault.toStored()).isEqualTo("napp_default")
     }
 
     @Test
-    fun `toStored - ElementFade encodes as element_fade`() {
+    fun `toStored - NAppFade encodes as napp_fade`() {
         assertThat(NotificationSound.NAppFade.toStored()).isEqualTo("napp_fade")
     }
 
