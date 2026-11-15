@@ -162,7 +162,8 @@ Done:
 
 - Firebase project `klabausterbeerechat` contains all package ids:
   `com.karich.design.nappx`, `.debug`, `.nightly` (plus the old `kb.chat` apps).
-- `app/google-services.json` is in place and tracked in this repo.
+- `app/google-services.json` is **not tracked** (gitignored). Place it locally or inject it as a CI
+  secret before building the `gplay` flavor.
 - `com.google.gms.google-services` is enabled in `app/build.gradle.kts`.
 - Verified: debug/nightly/release resolve to distinct Firebase app ids.
 - The `gplay` flavor bundles Firebase; `fdroid` uses UnifiedPush only.
