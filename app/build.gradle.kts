@@ -22,6 +22,7 @@ import extension.allLibrariesImpl
 import extension.allServicesImpl
 import extension.buildConfigFieldStr
 import extension.locales
+import extension.readLocalProperty
 import extension.setupDependencyInjection
 import extension.testCommonDependencies
 import org.sonarqube.gradle.SonarResolverTask
@@ -96,6 +97,17 @@ android {
             storePassword = System.getenv("ELEMENT_ANDROID_NIGHTLY_STOREPASSWORD")
                 ?: project.property("signing.element.nightly.storePassword") as? String?
         }
+        register("release") {
+            keyAlias = System.getenv("NAPP_ANDROID_RELEASE_KEYID")
+                ?: readLocalProperty("signing.napp.release.keyId")
+            keyPassword = System.getenv("NAPP_ANDROID_RELEASE_KEYPASSWORD")
+                ?: readLocalProperty("signing.napp.release.keyPassword")
+            storeFile = (System.getenv("NAPP_ANDROID_RELEASE_STOREPATH")
+                ?: readLocalProperty("signing.napp.release.storePath"))
+                ?.let { file(it) }
+            storePassword = System.getenv("NAPP_ANDROID_RELEASE_STOREPASSWORD")
+                ?: readLocalProperty("signing.napp.release.storePassword")
+        }
     }
 
     val baseAppName = BuildTimeConfig.APPLICATION_NAME
@@ -122,7 +134,16 @@ android {
                 "login_redirect_scheme",
                 oAuthRedirectSchemeBase,
             )
-            signingConfig = signingConfigs.getByName("debug")
+            val releaseSigning = signingConfigs.getByName("release")
+            signingConfig = if (releaseSigning.storeFile != null) {
+                releaseSigning
+            } else {
+                logger.warn(
+                    "No release signing key configured (signing.napp.release.*); falling back to the debug keystore. " +
+                        "Do not upload this build to Google Play."
+                )
+                signingConfigs.getByName("debug")
+            }
 
             optimization {
                 enable = true

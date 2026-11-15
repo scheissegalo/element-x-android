@@ -49,8 +49,16 @@ Integrity/App Check, and Android App Links (`assetlinks.json`).
 - Release / Play: get the **App signing key certificate** from Play Console → Test and release →
   Setup → App integrity. This is the certificate devices actually see (Play re-signs your upload).
   If you sign locally, use `keytool -list -v -keystore <keystore> -alias <alias>`.
-- The new app currently signs *release* with the debug keystore (`app/build.gradle.kts`); configure a
-  real release keystore before publishing.
+
+### Release/upload key (generated locally)
+
+- Keystore: `~/.android/napp-release.jks`, alias `napp`, RSA 4096, valid until 2054.
+- Configured via `local.properties` (`signing.napp.release.storePath|storePassword|keyId|keyPassword`);
+  environment variables `NAPP_ANDROID_RELEASE_*` are also supported. `local.properties` is git-ignored.
+- Upload-key SHA-256:
+  `3C:13:E5:5F:99:BF:4A:A8:67:C0:3D:A7:5B:06:72:FD:14:FA:11:96:D5:72:BD:F4:01:3D:31:EA:6B:B1:DF:ED`
+- **Back up the keystore and its password** — if lost, you must request an upload-key reset from Play.
+- The release build falls back to the debug keystore with a warning if this key is not configured.
 
 ---
 
