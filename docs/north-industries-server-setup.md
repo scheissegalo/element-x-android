@@ -150,35 +150,30 @@ Firebase project and a Matrix push gateway.
 
 ### 5a. Firebase
 
-A project already exists (`klabausterbeerechat`) and already contains the release package
-`com.karich.design.nappx`. Still to do:
+Done:
 
-1. Add the remaining Android apps in Firebase:
-   - `com.karich.design.nappx.debug`
-   - `com.karich.design.nappx.nightly`
-2. Re-download `google-services.json` and place it in `app/`. (It is **not** in `.gitignore` in this
-   repository; decide whether to commit it or ignore it. The old app keeps per-variant copies under
-   `vector-app/src/gplay/{debug,release,nightly}/`.)
-3. Enable the Google services Gradle plugin in `app/build.gradle.kts` (currently commented out):
-   `alias(libs.plugins.gms.google.services)`. The plugin fails the build if a variant's package id is
-   missing from the JSON, which is why step 1 is required before enabling it.
-4. The `fdroid` flavor does not bundle Firebase; push there only works through UnifiedPush.
+- Firebase project `klabausterbeerechat` contains all package ids:
+  `com.karich.design.nappx`, `.debug`, `.nightly` (plus the old `kb.chat` apps).
+- `app/google-services.json` is in place and tracked in this repo.
+- `com.google.gms.google-services` is enabled in `app/build.gradle.kts`.
+- Verified: debug/nightly/release resolve to distinct Firebase app ids.
+- The `gplay` flavor bundles Firebase; `fdroid` uses UnifiedPush only.
+
+If you add/rename packages later, update the JSON in `app/` (replace it wholesale) and rebuild.
 
 ### 5b. Push gateway (Sygnal)
 
 Sygnal is already running at `https://push.klabausterbeere.xyz` and serves the old app's `kb.chat`
-entry.
+entry plus the new `com.karich.design.nappx` entry.
 
-1. Add an app entry for `com.karich.design.nappx` using the **same FCM service account/credentials**
-   (both apps live in the same Firebase project).
-2. `PushConfig.PUSHER_APP_ID` is already set to `com.karich.design.nappx`; make sure the Sygnal entry
+1. `PushConfig.PUSHER_APP_ID` is already set to `com.karich.design.nappx`; make sure the Sygnal entry
    matches exactly. (Alternatively keep `kb.chat` in both apps and reuse the existing entry.)
-3. The gateway URL is already configured as
+2. The gateway URL is already configured as
    `https://push.klabausterbeere.xyz/_matrix/push/v1/notify` in `FirebaseConfig` and
    `UnifiedPushConfig`.
-4. Synapse side: no global gateway setting is required (clients register the URL), but ensure
+3. Synapse side: no global gateway setting is required (clients register the URL), but ensure
    outbound HTTPS from the homeserver workers to the gateway and that pusher workers are healthy.
-5. Both apps can run side by side: each registers a pusher with its own FCM token, so both receive
+4. Both apps can run side by side: each registers a pusher with its own FCM token, so both receive
    notifications. If the same account is signed in on both apps on the same phone, expect one
    notification per app per event.
 
