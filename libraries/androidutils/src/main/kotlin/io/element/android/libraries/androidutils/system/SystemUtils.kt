@@ -18,7 +18,6 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.RequiresApi
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.net.toUri
 import io.element.android.libraries.androidutils.R
@@ -112,20 +111,6 @@ fun Context.openAppSettingsPage(
                 data = Uri.fromParts("package", packageName, null)
             }
         )
-    } catch (_: ActivityNotFoundException) {
-        toast(noActivityFoundMessage)
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun Context.startInstallFromSourceIntent(
-    activityResultLauncher: ActivityResultLauncher<Intent>,
-    noActivityFoundMessage: String = getString(R.string.error_no_compatible_app_found),
-) {
-    val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-        .setData("package:$packageName".toUri())
-    try {
-        activityResultLauncher.launch(intent)
     } catch (_: ActivityNotFoundException) {
         toast(noActivityFoundMessage)
     }
